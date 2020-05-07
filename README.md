@@ -28,6 +28,8 @@ Then add `reason-test-framework` to your `bsconfig.json`'s `bs-dependencies`:
 ## Usage
 
 ```reason
+open TestFramework;
+
 describe("TestFramework", ({test}) => {
   test("runs simple tests", ({expect}) => {
     expect.int(1 + 1).toBe(2);
