@@ -1,5 +1,7 @@
 # Reason Test Framework
 
+![Node.js CI](https://github.com/bloodyowl/reason-test-framework/workflows/Node.js%20CI/badge.svg?branch=master)
+
 > A test framework for Reason compiled to JS with BuckleScript
 
 **Reason Test Framework** aims to give a simple API for your tests, making them readable. It produces code that [Jest](https://jestjs.io) can consume.
