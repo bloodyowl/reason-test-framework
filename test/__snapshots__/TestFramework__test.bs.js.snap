@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestFramework produces snapshots 1`] = `"hello"`;
+
+exports[`TestFramework produces snapshots 2`] = `
+Object {
+  "id": 1,
+}
+`;
