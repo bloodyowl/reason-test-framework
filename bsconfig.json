@@ -6,7 +6,7 @@
       "dir": "src",
       "subdirs": true
     },
-    { "dir": "test", "subdirs": true }
+    { "dir": "test", "subdirs": true, "type": "dev" }
   ],
   "package-specs": {
     "module": "commonjs",
