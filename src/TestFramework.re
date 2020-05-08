@@ -154,7 +154,6 @@ module Jest = {
   external resetModules: (. unit) => unit = "resetModules";
   [@bs.scope "jest"] [@bs.val]
   external resetAllMocks: (. unit) => unit = "resetAllMocks";
-  [@bs.scope "jest"] [@bs.val] external mock: (. 'a) => mock('a) = "mock";
   [@bs.val]
   external describe: (. string, (. unit) => unit) => unit = "describe";
   [@bs.val] external beforeAll: (. ((. unit) => unit)) => unit = "beforeAll";
@@ -628,9 +627,6 @@ let resetAllMocks = () => {
 
 module Mock = {
   type t('a) = mock('a);
-  let mock = func => {
-    Jest.mock(. func);
-  };
   [@bs.scope "jest"] [@bs.val] external fn: unit => 'a = "fn";
   [@bs.scope "jest"] [@bs.val] external fnWithImplementation: 'a => 'a = "fn";
   [@bs.scope "jest"] [@bs.val] external mockModule: string => unit = "mock";

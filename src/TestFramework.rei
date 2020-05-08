@@ -175,7 +175,6 @@ let resetAllMocks: unit => unit;
 
 module Mock: {
   type t('a);
-  let mock: 'a => t('a);
   [@bs.scope "jest"] [@bs.val] external fn: unit => 'a = "fn";
   [@bs.scope "jest"] [@bs.val] external fnWithImplementation: 'a => 'a = "fn";
   [@bs.scope "jest"] [@bs.val] external mockModule: string => unit = "mock";
