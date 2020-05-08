@@ -1,6 +1,6 @@
 {
-  "name": "reason-test",
-  "version": "0.1.0",
+  "name": "reason-test-framework",
+  "version": "0.3.1",
   "sources": [
     {
       "dir": "src",
