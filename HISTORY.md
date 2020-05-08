@@ -1,3 +1,9 @@
+## 0.3.1
+
+Changes:
+
+- Fix BS name field (f1b31fd)
+
 ## 0.3.0
 
 Changes:
