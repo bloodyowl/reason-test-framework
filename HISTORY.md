@@ -1,3 +1,9 @@
+## 0.3.0
+
+Changes:
+
+- Disable namespace (19d93e2)
+
 ## 0.2.0
 
 Changes:
