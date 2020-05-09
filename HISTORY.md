@@ -1,3 +1,9 @@
+## 0.3.2
+
+Changes:
+
+- Lower requirements for BuckleScript version (2edd852)
+
 ## 0.3.1
 
 Changes:
