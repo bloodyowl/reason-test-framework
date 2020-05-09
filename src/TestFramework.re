@@ -4,19 +4,19 @@ module type CounterInterface = {
   type t;
 
   /**
- * Creates a new counter starting at 0.
- */
+  * Creates a new counter starting at 0.
+  */
   let create: unit => t;
 
   /**
- * Creates a new counter starting at the given integer.
- */
+  * Creates a new counter starting at the given integer.
+  */
   let startingAt: int => t;
 
   /**
- * Gets the next value of the counter. This function will never return the same
- * value for a particular counter twice. (Unless you overflow ints...).
- */
+  * Gets the next value of the counter. This function will never return the same
+  * value for a particular counter twice. (Unless you overflow ints...).
+  */
   let next: t => int;
 };
 
@@ -143,45 +143,57 @@ module Types = {
 
 open Types;
 
+type undefined = Js.undefined(unit);
+
+let undefined: undefined = Js.Undefined.empty;
+
 /**
- The underlying, external Jest implementations. These should not be used outside
- of this file.
- */
+  The underlying, external Jest implementations. These should not be used outside
+  of this file.
+  */
 type mock('a);
 
 module Jest = {
   [@bs.scope "jest"] [@bs.val]
-  external resetModules: (. unit) => unit = "resetModules";
+  external resetModules: (. unit) => undefined = "resetModules";
   [@bs.scope "jest"] [@bs.val]
-  external resetAllMocks: (. unit) => unit = "resetAllMocks";
+  external resetAllMocks: (. unit) => undefined = "resetAllMocks";
   [@bs.val]
-  external describe: (. string, (. unit) => unit) => unit = "describe";
-  [@bs.val] external beforeAll: (. ((. unit) => unit)) => unit = "beforeAll";
-  [@bs.val] external beforeEach: (. ((. unit) => unit)) => unit = "beforeEach";
-  [@bs.val] external afterEach: (. ((. unit) => unit)) => unit = "afterEach";
-  [@bs.scope "test"] [@bs.val] external testTodo: (. string) => unit = "todo";
-  [@bs.val] external test: (. string, (. unit) => unit) => unit = "test";
+  external describe: (. string, (. unit) => undefined) => undefined =
+    "describe";
   [@bs.val]
-  external testAsync: (. string, (. ((. unit) => unit)) => unit) => unit =
+  external beforeAll: (. ((. unit) => undefined)) => undefined = "beforeAll";
+  [@bs.val]
+  external beforeEach: (. ((. unit) => undefined)) => undefined = "beforeEach";
+  [@bs.val]
+  external afterEach: (. ((. unit) => undefined)) => undefined = "afterEach";
+  [@bs.scope "test"] [@bs.val]
+  external testTodo: (. string) => undefined = "todo";
+  [@bs.val]
+  external test: (. string, (. unit) => undefined) => undefined = "test";
+  [@bs.val]
+  external testAsync:
+    (. string, (. ((. unit) => unit)) => undefined) => undefined =
     "test";
   [@bs.scope "test"] [@bs.val]
-  external testOnly: (. string, (. unit) => unit) => unit = "only";
+  external testOnly: (. string, (. unit) => undefined) => undefined = "only";
   [@bs.scope "test"] [@bs.val]
-  external testSkip: (. string, (. unit) => unit) => unit = "skip";
+  external testSkip: (. string, (. unit) => undefined) => undefined = "skip";
   type expectResult;
   [@bs.val] external expect: (. 'a) => expectResult = "expect";
   [@bs.send]
-  external toMatchSnapshot: expectResult => unit = "toMatchSnapshot";
-  [@bs.send] external toBe: (expectResult, 'a) => unit = "toBe";
+  external toMatchSnapshot: expectResult => undefined = "toMatchSnapshot";
+  [@bs.send] external toBe: (expectResult, 'a) => undefined = "toBe";
   [@bs.scope "not"] [@bs.send]
-  external notToBe: (expectResult, 'a) => unit = "toBe";
-  [@bs.send] external toEqual: (expectResult, 'a) => unit = "toEqual";
+  external notToBe: (expectResult, 'a) => undefined = "toBe";
+  [@bs.send] external toEqual: (expectResult, 'a) => undefined = "toEqual";
   [@bs.scope "not"] [@bs.send]
-  external notToEqual: (expectResult, 'a) => unit = "toEqual";
+  external notToEqual: (expectResult, 'a) => undefined = "toEqual";
   [@bs.send]
-  external toBeCloseTo: (expectResult, 'a, int) => unit = "toBeCloseTo";
+  external toBeCloseTo: (expectResult, 'a, int) => undefined = "toBeCloseTo";
   [@bs.scope "not"] [@bs.send]
-  external notToBeCloseTo: (expectResult, 'a, int) => unit = "toBeCloseTo";
+  external notToBeCloseTo: (expectResult, 'a, int) => undefined =
+    "toBeCloseTo";
 };
 
 module Extensions = {
@@ -198,7 +210,8 @@ module Extensions = {
   external expectDotExtend: reasonRootMatcher('a, 'b) => unit =
     "expect.extend";
   [@bs.send]
-  external expectReasonRootMatcher: (Jest.expectResult, (string, 'a)) => unit =
+  external expectReasonRootMatcher:
+    (Jest.expectResult, (string, 'a)) => undefined =
     "reasonRootMatcher";
   /* The structure we need to construct to represent a matcher */
   type matcher('a, 'b) = {
@@ -544,24 +557,29 @@ let beforeEach = fn => {
   let jsFn =
     (.) => {
       fn();
+      undefined;
     };
-  Jest.beforeEach(. jsFn);
+  let _ = Jest.beforeEach(. jsFn);
+  ();
 };
 
 let afterEach = fn => {
   let jsFn =
     (.) => {
       fn();
+      undefined;
     };
-  Jest.afterEach(. jsFn);
+  let _ = Jest.afterEach(. jsFn);
+  ();
 };
 
 let beforeAll = fn => {
   let jsFn =
     (.) => {
       fn();
+      undefined;
     };
-  Jest.beforeAll(. jsFn);
+  Jest.beforeAll(. jsFn)->ignore;
 };
 
 let createTest = (test, ext, name, fn) => {
@@ -569,6 +587,7 @@ let createTest = (test, ext, name, fn) => {
   let jsFn =
     (.) => {
       fn(testUtils);
+      undefined;
     };
   let _ = test(. name, jsFn);
   ();
@@ -579,8 +598,10 @@ let createTestAsync = (test, ext, name, fn) => {
   let jsFn =
     (. callback) => {
       fn({...testUtils, callback: () => callback(.)});
+      undefined;
     };
-  test(. name, jsFn);
+  let _ = test(. name, jsFn);
+  ();
 };
 
 let createDescribeUtils = ext => {
@@ -607,8 +628,10 @@ let extendDescribe = extFn => {
       let jsFn =
         (.) => {
           fn(describeUtils);
+          undefined;
         };
-      Jest.describe(. name, jsFn);
+      let _ = Jest.describe(. name, jsFn);
+      ();
     },
   };
 };
@@ -632,9 +655,18 @@ module Mock = {
   [@bs.scope "jest"] [@bs.val] external mockModule: string => unit = "mock";
   external getMock: 'a => t('a) = "%identity";
   [@bs.send]
-  external mockReturnValue: (t('a), 'b) => unit = "mockReturnValue";
+  external mockReturnValue: (t('a), 'b) => undefined = "mockReturnValue";
+  let mockReturnValue = (mock, value) => {
+    let _ = mockReturnValue(mock, value);
+    ();
+  };
   [@bs.send]
-  external mockImplementation: (t('a), 'a) => unit = "mockImplementation";
+  external mockImplementation: (t('a), 'a) => undefined =
+    "mockImplementation";
+  let mockImplementation = (mock, value) => {
+    let _ = mockImplementation(mock, value);
+    ();
+  };
   [@bs.get] [@bs.scope "mock"]
   external calls: t('a) => array(array('b)) = "calls";
   [@bs.set] [@bs.scope "mock"]
