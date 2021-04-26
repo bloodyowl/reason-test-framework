@@ -1,4 +1,6 @@
-# Reason Test Framework
+# ~~Reason Test Framework~~
+
+**Archived**: prefer https://github.com/bloodyowl/rescript-test
 
 ![Node.js CI](https://github.com/bloodyowl/reason-test-framework/workflows/Node.js%20CI/badge.svg?branch=master)
 
